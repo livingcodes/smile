@@ -1,0 +1,5 @@
+asp.net UpdatePanel posts all data back to server, but server only responds with partial html to update panel. Request runs through normal lifecycle except render only called on controls in update panel.
+http://stackoverflow.com/questions/965340/asp-net-ajax-updatepanel-uploads-entire-page-on-postback
+
+Because ASP.NET dynamically compiles all classes in the App_Code folder, you should not store classes in the folder that you compile as part of your Web application project. If you do, the class will be compiled two times. The first time will be as part of the Visual Studio Web application project assembly, and the second time will be at run time by ASP.NET. This can cause a "could not load type" exception, which occurs because there are duplicate type names in the application.
+http://msdn.microsoft.com/en-us/library/aa983476.aspx

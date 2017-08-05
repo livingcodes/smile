@@ -1,0 +1,190 @@
+http://ndpsoftware.com/git-cheatsheet.html
+https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf
+
+Add Existing Project to Empty Remote Repository
+- Create empty repository using gitlab/github gui
+- git init              // init folder as git repo
+- git add .gitignore    // ignore some files before commit
+- git commit -m "ignore files"
+- git add .             // add untracked files (that aren't ignored)
+- git commit -m "add existing files"
+- git remote add origin https://gitlab.com/...
+- git push origin master
+
+GIT Bash
+// change directory
+cd /c/code
+
+// create .gitignore file
+echo.>.gitignore
+
+// open file
+start folder/file.txt
+
+// clear screen
+clear
+
+// capitalization of paths matter
+
+Common
+
+-- get origin and replay your commit afterwards (instead of merging)
+git pull --rebase
+
+-- CREATE LOCAL AND REMOTE BRANCH
+git branch [name] // create local branch
+git push -u origin [name] // create remote branch and set as upstream branch
+git remote show origin // see default upstream branches
+
+
+
+-- FETCH & MERGE --
+git fetch origin master   // fetches changes from remote and puts in remote tracking branch
+git diff master origin/master
+git merge origin/master   // origin/master is the remote tracking branch (i.e. origin/{whatever-remote-branch-name-is})
+(vim editor: 1. press "i" 2. write merge comment 3. press "esc" 4. write ":wq" 5. press "enter"
+(fix conflicts)
+git commit -m "{message}"
+(build, repeat if more fetched changes)
+git push
+
+-- FETCH & REBASE --
+git fetch
+git rebase origin/master
+git push
+
+-- BRANCHING --
+git branch              // current branch gb
+git branch -a           // view all branches including remote branches
+git branch -d [branch]  // delete local branch
+git checkout [branch]   // switch to branch
+git checkout -b [name]  // create a new branch and switch to it (any unstaged changes will be available in new branch)
+git merge [name]        // merges another branch into the currently checked out branch
+git push origin [name] // create remote branch
+git push -u origin [name] // create remote branch and set as upstream branch
+
+-- GET REMOTE --
+git branch -a                             -- view remote branches
+git remote show origin                    -- show remote defaults
+git checkout remotes/origin/branch        -- pull down remote branch
+git checkout -b new-local-branch          -- create new local branch for remote branch
+git branch --set-upstream-to remotes/origin/branch -- won't need to specify remote for push and pull
+
+-- RESET --
+
+// oops made a mistake on last local commit
+// >> keeps local changes 
+// >> but resets/undoes commit
+// 2 is the number of local commits to reset/undo
+git reset --soft HEAD~2
+
+// undo changes to file (unless it is added to staging)
+git checkout -- {filename}
+
+// removes files that have been staged/ready for commit
+// does not undo any code changes
+git reset
+
+// remove added file (case-sensitive) from staging
+// does not undo any code changes
+git reset HEAD [path/filename]
+
+// using asterisk to avoid necessity of typing parent directories
+// does not undo any code changes
+git reset HEAD *[filename]
+
+// undo staged and working directory changes (deletes changes)
+git reset --hard
+
+// undo changes to file that matches wildcard query
+git checkout -- '../*SignUp.aspx'
+
+// remove untracked files (leaves ignored files)
+git clean --dry-run  // to see which files would be deleted
+git clean -i // iteratively shows files and you can pick which ones to delete
+git clean -f // (force) removes files specified in --dry-run
+
+-- STASH --
+
+// stash modified files
+git stash
+
+// view list of stashes
+git stash list
+
+// apply most recent stash and remove from stash list
+git stash pop
+
+// apply most recent stash (does not remove from stash list)
+git stash apply
+
+// apply stash with specified index (does not remove from list)
+git stash apply stash@{0}
+
+// apply most recent stash starting with name
+git stash apply stash^{/startofname}
+
+// show diff w/ original parent (-p show code changes. w/out only file names)
+git stash show -p stash@{0}
+
+// drop
+git stash drop stash@{0}
+
+-- DIFF --
+
+git diff                // diff of only what has not been staged
+git diff --staged       // diff of only what is staged
+git diff 01234567 89ABCDEF  // diff all files between two commits, enter older commit first
+git diff 01234567 89ABCDEF path/file  // diff specific file between two commits
+Enter 'q' to quit
+
+-- RENAME --
+
+// git can detect rename if files are 50% the same
+git mv old new
+// but even if git detects rename, git log won't show history before rename unless use --follow
+git log --follow new
+
+-- GIT COMMANDS --
+git config --global user.name "MyName"
+git config --global user.email "my@email.com"   // set email globally
+git config user.email "my@email.com"            // set email for current repository
+git init      // create empty git repository
+git status              // status - current branch, what files are modified and staged
+git touch README.md     // create file
+git add [filename]      // stage
+// not sure about the differences between these yet
+git add -u              // add unstaged tracked files to staging
+git add .               // add unstaged tracked files and untracked files (that aren't ignored)
+git add --all           // add all files that are not untracked
+git add '../*.aspx.cs'  // add modified files that match wildcard query
+git commit              // commit staged files only Ctrl-O (write message) Ctrl-X? (exit)
+git commit -a           // commits staged and unstaged but not files not tracked
+git commit -v           // view diff while committing
+git diff [branch1] [branch2]
+git diff --staged	      // shows changes git commit will do, press q to quit diff
+git diff HEAD           // diff since last commit
+git remote add origin [git@domain.com:GroupName]/[name.git]  // create a remote named origin
+git push [remote]       // push current branch to remote
+git push -u [remote] master // push to remote
+git log                 // see local commits
+git log origin/master..HEAD // see unpushed commits
+git merge [another branch] // merges another branch to current branch
+git rebase master       // pull updates from master branch into current branch
+git pull                // update local branch from remote server gl
+git merge [repository]/[branch] // merge two local branches
+
+// replace local changes with remote, leaves untracked files alone
+git fetch -all
+git reset --hard origin/master
+
+
+// Recover Deleted File
+// find last commit that affected file; returns commit guid if found
+git rev-list -n 1 HEAD [filepath]
+// checkout that version; now the deleted file should show up at the file path
+git checkout [commitguid]^ -- [filepath]
+
+// Permanently delete file
+git filter-branch --force --index-filter 'git rm --cached --ignore-match [filename]' --prune-empty --tag-name-filter cat -- --all
+git push origin --force --all

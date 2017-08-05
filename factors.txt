@@ -1,0 +1,21 @@
+FACTORS
+-------
+
+Seo
+- Redirects/Canonical URLs (lowercase, trailing slash, friendly urls (rewrites), default page)
+- Microdata mark up
+Advertising
+Video
+Analytics (Visits, Interactions, Flow, Demographics, Campaign Tracking, AB Testing)
+Marketing (message, lure certain type of clientele)
+- campaigns (emails, social, tracking, analyzing)
+Design (wireframe, comps)
+Social Media/Interaction/Partnerships
+- facebook, twitter
+Performance
+- caching (output caching, data caching)
+- auto-allocate hardware
+Maintenance/New Content/CMS
+Security (security certificate, https, data encryption)
+Testing (browser compatibility, mobile device, unit tests, performance tests, feature tests)
+Monitoring (web & database server cpu & memory, auto-adjust)

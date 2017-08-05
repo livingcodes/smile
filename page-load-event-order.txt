@@ -1,0 +1,33 @@
+Page with master page and base page
+http://msdn.microsoft.com/en-us/library/ms178472(v=vs.100).aspx
+
+mixed order
+1 page.page_load default
+2 base-page.onload default_aspx
+3 page.onload default
+
+4 master.page_load site_master
+5 master.onload site_master
+
+6 control.page_load login-status-control
+7 base-control.onload controls_login_status_control_ascx
+8 control.onload login-status-control
+
+
+onload order
+1 base-page.onload profile_aspx
+2 page.onload default
+3 master.onload site_master
+4 base-control.onload controls_login_status_control_ascx
+5 control.onload login-status-control
+
+
+page_load order
+1 page.page_load default
+2 master.page_load site_master
+3 control.page_load login-status-control
+
+
+note: base-page.page_load is hidden by page.page_load
+note: base-control.page_load is hidden by control.page_load
+note: general order is page > master > control with page_load occuring before onload

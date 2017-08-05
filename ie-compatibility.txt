@@ -1,0 +1,17 @@
+<!-- web page -->
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  </head>
+</html>
+
+<!-- or web config -->
+<configuration>
+<system.webServer>
+  <httpProtocol>
+    <customHeaders>
+      <add name="X-UA-Compatible" value="IE=EmulateIE8" />
+    </customHeaders>
+  </httpProtocol>
+</system.webServer>
+</configuration>

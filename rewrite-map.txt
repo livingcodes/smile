@@ -1,0 +1,113 @@
+Rewrite Map
+Supports friendly urls and seo redirects
+Example: /home instead of /default.aspx
+
+- requires IIS 7 and URL Rewrite plugin
+- http://www.iis.net/downloads/microsoft/url-rewrite
+- changes can be made in IIS user interface or in web.config. user interface just updates web.config. so you can copy and paste xml.
+- web.config can't be readonly when using IIS URL Rewrite module
+- rules operate on the URL path (not the complete url), relative to the location of the Web.config
+http://www.iis.net/learn/extensions/url-rewrite-module/using-rewrite-maps-in-url-rewrite-module
+
+
+Example of Friendly URLS:
+<system.webServer>
+<rewrite>
+    <rewriteMaps>
+        <rewriteMap name="StaticRewrites" defaultValue="">
+            <add key="/home" value="/default.aspx" />
+            <add key="/article1" value="/article.aspx?id=1&amp;title=some-title" />
+            <add key="/some-title" value="/article.aspx?id=1&amp;title=some-title" />
+            <add key="/post/some-title.html" value="/article.aspx?id=1&amp;title=some-title" />
+        </rewriteMap>
+    </rewriteMaps>
+    <rules>
+	<rule name="Rewrite Rule">
+	    <match url=".*" />
+	    <conditions>
+	        <add input="{StaticRewrites:{REQUEST_URI}}" pattern="(.+)" />
+	    </conditions>
+	    <action type="Rewrite" url="{C:1}" />
+	</rule>
+    </rules>
+</rewrite>
+</system.webServer>
+
+Example of SEO Redirects:
+<rewrite>
+	<rules>
+            <clear />
+            <rule name="redirect default.aspx" patternSyntax="ECMAScript" stopProcessing="true">
+                <match url="^(.*\/)*default\.aspx$" />
+                <conditions logicalGrouping="MatchAll" trackAllCaptures="false" />
+                <action type="Redirect" url="{R:1}" />
+            </rule>
+            <rule name="RemoveTrailingSlashRule1" stopProcessing="true">
+                <match url="(.*)/$" />
+                <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+                    <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                    <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                </conditions>
+                <action type="Redirect" url="{R:1}" />
+            </rule>
+            <rule name="LowerCaseRule1" stopProcessing="true">
+                <match url="[A-Z]" ignoreCase="false" />
+                <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+                    <add input="{URL}" pattern="WebResource.axd" negate="true" />
+                </conditions>
+                <action type="Redirect" url="{ToLower:{URL}}" />
+            </rule>
+            <rule name="Redirect rule1 for redirect_map">
+                <match url=".*" />
+                <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+                    <add input="{redirect_map:{REQUEST_URI}}" pattern="(.+)" />
+                </conditions>
+                <action type="Redirect" url="{C:1}" appendQueryString="false" />
+            </rule>
+            <rule name="Rewrite rule1 for rewrite_map">
+                <match url=".*" />
+                <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+                    <add input="{rewrite_map:{REQUEST_URI}}" pattern="(.+)" />
+                </conditions>
+                <action type="Rewrite" url="{C:1}" appendQueryString="false" />
+            </rule>
+            <rule name="CanonicalHostNameRule1">
+                <match url="(.*)" />
+                <conditions>
+                    <add input="{HTTP_HOST}" pattern="^scoretrackerlive\.com$" negate="true" />
+                </conditions>
+                <action type="Redirect" url="http://scoretrackerlive.com/{R:1}" />
+            </rule>
+        </rules>
+      
+        <rewriteMaps>
+            <rewriteMap name="rewrite_map">
+                <add key="/faq" value="/info.aspx?id=2557" />
+                <add key="/rules" value="/content.aspx?id=5860" />
+            </rewriteMap>  
+            <rewriteMap name="redirect_map">
+                <add key="/info.aspx?id=2557" value="/faq" />
+                <add key="/content.aspx?id=5860" value="/rules" />
+            </rewriteMap>
+        </rewriteMaps>
+</rewrite>
+
+Example of Redirecting Default Page
+<rule name="Beta Redirect Domain" stopProcessing="true">
+    <match url="^$" ignoreCase="true" />
+    <action type="Redirect" url="http://beta.domain.com" redirectType="Temporary" />
+</rule>
+<rule name="Beta Redirect Default" stopProcessing="true">
+    <match url="^default\.htm$" ignoreCase="true" />
+    <action type="Redirect" url="http://beta.domain.com" redirectType="Temporary" />
+</rule>
+
+Example of Replacing Hot Links
+<rule name="Prevent Image Hotlinking">
+    <match url=".*\.(gif|jpg|png)$"/>
+    <conditions>
+        <add input="{HTTP_REFERER}" pattern="^$" negate="true" />
+        <add input="{HTTP_REFERER}" pattern="^http://domain\.com/.*$" negate="true" />
+    </conditions>
+    <action type="Rewrite" url="/images/replacement_image.jpg" />
+</rule>

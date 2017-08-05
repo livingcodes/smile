@@ -1,0 +1,50 @@
+Page with inherited master page and inherited base page
+
+http://msdn.microsoft.com/en-us/library/ms178472(v=vs.100).aspx
+
+files:
+sub-master-page
+master-page
+base-page
+sub-base-page
+page
+base-control
+control
+
+mixed order
+page.page_load order-page
+base-page.onload secure_order_aspx
+sub-base-page.onload
+page.onload order-page
+sub-master.page_load
+master.onload entertainer_master
+sub-master.onload
+master.page_load site_master
+master.onload site_master
+control.page_load login-status-control
+base-control.onload controls_login_status_control_ascx
+control.onload login-status-control
+
+note: onload order
+1 base-page.onload secure_order_aspx
+2 sub-base-page.onload
+3 page.onload order-page
+4 master.onload entertainer_master
+5 sub-master.onload entertainer_master
+6 master.onload site_master
+7 base-control.onload controls_login_status_control_ascx
+8 control.onload login-status-control
+
+warn: don't understand why master.onload is called twice (potential to cause problems)
+  - but gettype get's different types each time ???
+	- looks like inheriting master page does not hide it's parent page_load and after both page_loads then onload is called again
+	- even if master.page_load is removed the master.onload is called twice still
+
+note: page_load order
+1 page.page_load order-page
+2 sub-master.page_load entertainer-master
+3 master.page_load site_master
+4 control.page_load login-status-control
+
+note: control.page_load hides base-control.page_load
+note: page.page_load hides base-page.page_load

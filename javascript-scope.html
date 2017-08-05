@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+	<body>
+		<h1>Remembering Javascript</h1>
+		<p id='result'></p>
+		<script>
+			Array.prototype.first = function(condition) {
+			    for (var i=0; i<this.length; i++) {
+			        if (condition(this[i]))
+			            return this[i]
+			    }
+			    return null
+			}
+			
+			function User(argumentName) {
+				this.publicName = argumentName
+				var privateName = argumentName
+				
+				var privateNames = ['casey', 'bort', 'horton']
+				this.publicNames = ['frank', 'jessie', 'william']
+				
+				var privateThis = this
+				
+				this.getPublicResult = function() {
+					var result = ''
+					result = 'Public function has access to constructor argument (' + argumentName + ')'
+					result += '<br>Public function has access to <em>public variable</em> when using "this." prefix (' + this.publicName + ')'
+					result += '<br>Public function thows exception when attempting to access <em>public variable</em> without "this." prefix' // + publicName
+					result += '<br>Public function has access to private variable (' + privateName + ')'
+					result += '<br>this in Public function is the instance of the class ' + this
+					return result
+				}
+				
+				this.getPrivateResult = function() {
+					var result = '<br>Public function has access to private function.'
+					result += getPrivateName()
+					return result
+				}
+				
+				function getPrivateName() {
+					var result = '<br><br>Private function has access to constructor argument (' + argumentName + ')'
+					result += '<br>Private function has access to private variable (' + privateName + ')'
+					result += '<br>Private function DOES NOT have access to public variable (throws exception when ommitting "this." prefix)' // + publicName
+					result += '<br>Private function DOES NOT have access to public variable (' + this.publicName + ' when using this.publicVariable)'
+					result += '<br><em>this</em> in Private function is the window ' + this
+					result += '<br>but <em>this</em> can be assigned to a private variable ahead of time and then used by private function to access public variables (' + privateThis.publicName + ')'
+					return result
+				}
+				
+				this.getLambdaResult = function() {
+					var name = privateNames.first(function(name) { return name[0] == privateNames[1][0] })
+					var result = '<br><br>Lambda can access parent class\'s private variables (' + name + ')'
+					
+					//var william = this.publicNames.first(function(name) { console.log('in lambda this = ' + this); return name[0] == this.publicNames[2][0] })
+					result += '<br>Lambda\'s <em>this</em> refers to window object'
+					result += '<br>Lambda does not have access to parent class\'s public variables when using <em>this</em> prefix b/c this refers to window object' 
+					
+					//var william = this.publicNames.first(function(name) { console.log('in lambda this = ' + this); return name[0] == publicNames[2][0] })
+					result += '<br>Lambda does not have access to parent class\'s public variables when omitting <em>this</em> prefix. Throws publicNames not defined'
+					result += '<br>So public variables that are needed in lambda would need to be assigned to private variable'
+					return result
+				}
+			}
+			
+			var user = new User('Casey')
+			var el = document.getElementById('result')
+			el.innerHTML = user.getPublicResult()
+			el.innerHTML += user.getPrivateResult()
+			el.innerHTML += user.getLambdaResult()
+		</script>
+	</body>
+</html>
+	

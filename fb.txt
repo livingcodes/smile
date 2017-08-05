@@ -1,0 +1,18 @@
+HOW TO ADD FACEBOOK COMMENTS
+
+Create Facebook App
+- http://developers.facebook.com
+- use site domain for app domain
+- for "how your app integrates", select "App on Facebook" and use site domain
+
+Generate Comment Control
+- http://developers.facebook.com/docs/reference/plugins/comments
+- on localhost comment not aggregated and moderator view not available
+- add generated script and place holder to page
+- use code to get Request.Url.PathAndQuery if placed in partial
+- add app id in meta tag to moderate in page
+
+Manage
+- moderate aggregate at http://developers.facebook.com/tools/comments
+- moderator settings: add moderator, blacklisted words, comment sort
+- add any additional admins https://developers.facebook.com/apps/{app id}/roles

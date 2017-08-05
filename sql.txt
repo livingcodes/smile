@@ -1,0 +1,64 @@
+set quoted_identifier on – disallows double quotes for strings; default for SQL Server 2008
+set quoted_identifier off – allows double quotes for strings
+set ansi_nulls on – disallows equal sign to compare value w/ null; use “is” keyword instead; default for SQL Server 2008
+set ansi_nulls off – allows equal sign to compare value w/ null
+
+-- fetch syntax
+declare @id int
+
+declare swag cursor for
+	select id from users where is_developer = true
+
+open swag
+  fetch next from swag into @id
+  
+  while @@fetch_status = 0 begin
+  	exec include_developer_swag_in_orders @id
+  	fetch next from swag into @id
+  end
+close swag
+deallocate swag
+
+
+--kill spid
+select d.name, p.* from master.sys.sysprocesses p
+inner join master.sys.databases d on p.dbid = d.database_id
+
+kill 52
+
+
+-- kill loop
+use master
+
+--execute SP_WHO
+
+-- kill spid
+--kill 75
+
+select p.spid, p.dbid, d.name, p.blocked, p.loginame, p.hostname, p.cmd from sysprocesses p
+inner join sysdatabases d on p.dbid = d.dbid
+where d.name = 'database_name'
+
+declare @db varchar(50)
+set @db = 'ese'
+declare @spid varchar(50)
+
+declare processes cursor for 
+	select p.spid from sysprocesses p
+	inner join sysdatabases d on p.dbid = d.dbid
+	where d.name = @db
+open processes
+fetch next from processes into @spid
+while @@fetch_status = 0 begin
+	print 'kill ' + @spid
+	exec ('kill ' + @spid)
+	fetch next from processes into @spid
+end
+close processes
+deallocate processes
+
+
+-- if not exists then insert
+if (not exists (select id from favorites) ) begin
+    insert into favorites values (@id)
+end
