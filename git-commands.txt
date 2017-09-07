@@ -173,8 +173,10 @@ git merge [another branch] // merges another branch to current branch
 git rebase master       // pull updates from master branch into current branch
 git pull                // update local branch from remote server gl
 git merge [repository]/[branch] // merge two local branches
+
 git tag [tagname] // lightweight tag
 git tag -a [tagname] -m "[message]" // annotated tag
+git push origin [tagname]
 
 // replace local changes with remote, leaves untracked files alone
 git fetch -all
