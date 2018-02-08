@@ -96,6 +96,9 @@ git reset HEAD *[filename]
 // undo staged and working directory changes (deletes changes)
 git reset --hard
 
+// reset/revert to previous commit (deleting commits that were made after this commit)
+git reset --hard [commitguid]
+
 // undo changes to file that matches wildcard query
 git checkout -- '../*SignUp.aspx'
 
