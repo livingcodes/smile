@@ -124,6 +124,8 @@ git stash apply
 // apply stash with specified index (does not remove from list)
 git stash apply stash@{0}
 
+// save stash with name
+git stash save "[descriptive name]"
 // apply most recent stash starting with name
 git stash apply stash^{/startofname}
 
