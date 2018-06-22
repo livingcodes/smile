@@ -154,6 +154,7 @@ git log --follow new
 git config --global user.name "MyName"
 git config --global user.email "my@email.com"   // set email globally
 git config user.email "my@email.com"            // set email for current repository
+git config --global core.editor "'C:/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
 git init      // create empty git repository
 git status              // status - current branch, what files are modified and staged
 git touch README.md     // create file
@@ -197,3 +198,7 @@ git checkout [commitguid]^ -- [filepath]
 // Permanently delete file
 git filter-branch --force --index-filter 'git rm --cached --ignore-match [filename]' --prune-empty --tag-name-filter cat -- --all
 git push origin --force --all
+
+// Rebase interactive. Squash, order or drop local commits. Amend commit messages
+git rebase -i [commit-guid] // use commit-guid BEFORE the one you want to squash
+// :cq in vim editor will cancel rebase
