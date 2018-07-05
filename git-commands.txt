@@ -188,6 +188,9 @@ git push origin [tagname]
 git fetch -all
 git reset --hard origin/master
 
+// Delete duplicate file with different casing
+git mv file.aspx file.aspx.bak       // rename file you want to delete
+git mv File.aspx file.aspx           // optional: rename file you want to keep to different casing, if desired
 
 // Recover Deleted File
 // find last commit that affected file; returns commit guid if found
