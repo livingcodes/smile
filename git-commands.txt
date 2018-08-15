@@ -205,3 +205,7 @@ git push origin --force --all
 // Rebase interactive. Squash, order or drop local commits. Amend commit messages
 git rebase -i [commit-guid] // use commit-guid BEFORE the one you want to squash
 // :cq in vim editor will cancel rebase
+// if commits were already pushed before rebase then will need to force push
+// careful not to overwrite anyone elses pushed commits
+git push --force origin [branch]
+
