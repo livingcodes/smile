@@ -188,6 +188,15 @@ git push origin [tagname]
 git fetch -all
 git reset --hard origin/master
 
+// Rename filename casing
+
+// two step
+git mv FILE.aspx file.aspx2
+git mv file.aspx2 file.aspx
+
+// or one step
+git mv -f FILE.aspx file.aspx
+
 // Delete duplicate file with different casing
 git mv file.aspx file.aspx.bak       // rename file you want to delete
 git mv File.aspx file.aspx           // optional: rename file you want to keep to different casing, if desired
@@ -203,8 +212,17 @@ git filter-branch --force --index-filter 'git rm --cached --ignore-match [filena
 git push origin --force --all
 
 // Rebase interactive. Squash, order or drop local commits. Amend commit messages
-git rebase -i [commit-guid] // use commit-guid BEFORE the one you want to squash
-// :cq in vim editor will cancel rebase
+git rebase -i [commit-guid] // use commit-guid BEFORE the one you want to squash, can use HEAD~2 if you want
+
+// rewording a commit is done on a separate screen so no need to change message on first screen (i.e. any rewording is ignored on first screen)
+// fixup and squash are combined with previous commit. commits are ordered with newest commit on the bottom.
+
+// vim editor
+// type 'i' to edit
+// type 'ESC' to stop editing
+// type ':wq' to write and quit (i.e. commit changes)
+// or type :cq to cancel rebase
+
 // if commits were already pushed before rebase then will need to force push
 // careful not to overwrite anyone elses pushed commits
 git push --force origin [branch]
