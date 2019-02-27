@@ -1,8 +1,10 @@
 // the type passed to GetLogger is compared to the logger name (which is a namespace)
+   so if LogFactory returns the same logger created with the same type then that type's namespace is the only one that needs to be configured
 // rolling appender, using <logger /> element instead of <root> to target specific namespace
 // "<file value" in config is relative to web root on website and relative to output folder in test project
 //    - ex. in production: log/app.log
 //    - ex. in test project: ..\..\.\log\app.log (relative to \bin\Debug; notice slash direction; full file path works too)
+// give IIS_IUSRS write permissions to log folder
 
 using log4net;
 
@@ -87,3 +89,25 @@ public class web_page_base : Page
       <appender-ref ref="FileAppender" />
     </root>
   </log4net>
+
+
+// page to test logging
+<%@ Page Language="C#" %>
+<script runat="server">
+	protected string getName() {
+		string name = Request.QueryString["name"];
+		name = name == null || name == ""
+			? "'name' Query String Not Set"
+			: name;
+            
+        var log = Winnercomm.LogFactory.Create();
+        log.Info($"Hello {name} from log.aspx.");
+            
+        return name;
+	}
+</script>
+<html>
+<body>
+	<h1>Hello <% Response.Write( getName() ); %></h1>
+</body>
+</html>
