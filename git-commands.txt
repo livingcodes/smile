@@ -99,6 +99,10 @@ git reset --hard
 // reset/revert to previous commit (deleting commits that were made after this commit)
 git reset --hard [commitguid]
 
+// replace local changes with remote, leaves untracked files alone
+git fetch -all
+git reset --hard origin/master
+
 // undo changes to file that matches wildcard query
 git checkout -- '../*SignUp.aspx'
 
@@ -183,10 +187,6 @@ git merge [repository]/[branch] // merge two local branches
 git tag [tagname] // lightweight tag
 git tag -a [tagname] -m "[message]" // annotated tag
 git push origin [tagname]
-
-// replace local changes with remote, leaves untracked files alone
-git fetch -all
-git reset --hard origin/master
 
 // Rename filename casing
 
