@@ -1,3 +1,15 @@
+// Javascript Date: 
+// * Month is zero-based. Jan = 0, Feb = 1, etc.
+// * Other Date numbers like day are 1-based.
+// * So new Date(2019, 4, 16) would be 2019-05-16
+// * new Date() gets current time
+// * new Date().getTime() gets time in milliseconds since 1970 GMT.
+//   So Date.getTime() is convenient to use for TimeSpan msec parameter.
+
+// Example:
+// var now = new TimeSpan();
+// var newYears = new TimeSpan(new Date(2020, 0, 1);
+// var isEndOfWorld = now.greaterThanEqualTo(newYears);
 function TimeSpan(msec) {
   this.days = 0
   this.hours = 0
@@ -27,6 +39,8 @@ function TimeSpan(msec) {
   }
 
   // initialize
+  if (msec == undefined)
+    msec = new Date().getTime()
   if (!Number.isInteger(msec))
     return this
   msec = Number(msec)
