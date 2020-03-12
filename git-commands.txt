@@ -180,7 +180,7 @@ git push -u [remote] master // push to remote
 git log                 // see local commits
 git log origin/master..HEAD // see unpushed commits
 git merge [another branch] // merges another branch to current branch
-git rebase master       // pull updates from master branch into current branch
+git rebase master       // pull updates from master branch into current branch, if current branch has been pushed to remote then requires force push so may want to do merge instead
 git pull                // update local branch from remote server gl
 git merge [repository]/[branch] // merge two local branches
 
