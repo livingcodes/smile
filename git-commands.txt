@@ -217,6 +217,13 @@ git rebase -i [commit-guid] // use commit-guid BEFORE the one you want to squash
 // rewording a commit is done on a separate screen so no need to change message on first screen (i.e. any rewording is ignored on first screen)
 // fixup and squash are combined with previous commit. commits are ordered with newest commit on the bottom.
 
+// Change author of a commit
+git rebase -i HEAD~#
+(change action to "edit" for commits to change author)
+git commit --ammend --author "Casey <cjoyce@winnercomm.com>"
+(close editor or :wq in vim)
+git rebase --continue
+
 // vim editor
 // type 'i' to edit
 // type 'ESC' to stop editing
