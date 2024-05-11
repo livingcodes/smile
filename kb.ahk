@@ -7,3 +7,4 @@
 !;::^right
 !'::end
 !h::home
+!y::del
